@@ -3,12 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <title>Word Scramblle</title>
     <link rel="stylesheet" href="resources/styles/style.css">
 </head>
 <body>
-    <p class="word"></p>
-    <button id="get-word">Get Word</button>
+    <div class="game-container">
+        <img src="resources/images/Word Scramblle.svg" class="game-logo" alt="Game logo">
+
+        <!-- scrambled word that player has to guess -->
+        <div class="word-container">
+            <h1 class="word"></h1>
+        </div>
+
+        <!-- players "lives" -->
+        <div class="tries-container">
+            <p class="tries-label">Tries(x/x)</p>
+            <ol>
+                <li class="filled"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ol>
+        </div>
+
+        <!-- input where player one-by-one guesses the right word -->
+        <div class="inputs">
+            <input type="text" name="text-input" id="letter-input-1" class="letter-input" maxlength="1">
+            <input type="text" name="text-input" id="letter-input-2" class="letter-input" maxlength="1">
+            <input type="text" name="text-input" id="letter-input-3" class="letter-input" maxlength="1">
+            <input type="text" name="text-input" id="letter-input-4" class="letter-input" maxlength="1">
+            <input type="text" name="text-input" id="letter-input-5" class="letter-input" maxlength="1">
+            <input type="text" name="text-input" id="letter-input-6" class="letter-input" maxlength="1">
+        </div>
+
+        <!-- control buttons -->
+        <div class="buttons">
+            <button id="get-word">Random</button>
+            <button id="reset">Reset</button>
+        </div>  
+    </div>
     <script src="resources/javascript/script.js"></script>
 </body>
 </html>

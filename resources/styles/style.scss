@@ -1,4 +1,46 @@
-/* error toast stiles */
+/* reset */ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Outfit", sans-serif;
+}
+
+/* colors */
+$base-dark: #030616;
+$base-light: #F2F5F9;
+$grey-100: #97A3B6;
+$grey-200: #4A5567;
+$purle-dark: #672171;
+$purple-medium: #7429C6;
+$purple-light: #C951E7;
+
+/* typography */ 
+@mixin txt-large {
+    font-family: "Outfit", serif;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+@mixin txt-medium {
+    font-family: "Outfit", serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+@mixin txt-small {
+    font-family: "Outfit", serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+@mixin txt-button {
+    font-family: "Outfit", serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+/* error toast stiles - generated in script.js */
 .error-message {
     position: fixed;
     top: 20px;
@@ -28,4 +70,44 @@
     to {
         opacity: 0;
     }
+}
+
+body {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    background-image: url(../images/bg-guess-the-word.png);
+    background-size: cover;
+}
+
+.game-container {
+    width: 90%;
+    max-width: 420px;
+    background-color: $base-dark;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tries-container {
+    position: relative;
+    display: flex;
+
+    ol, li {
+        display: inline-block;
+    }
+
+    li {
+        width: 6px;
+        height: 6px;
+        background-color: $grey-200;
+        border-radius: 50%;
+        margin-right: 1rem;
+
+        &.filled {
+            background-color: $purple-medium;
+        }
+    }
+
 }
