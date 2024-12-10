@@ -1,0 +1,31 @@
+/* error toast stiles */
+.error-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ff4444;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    animation: 
+        slideIn 0.5s,
+        fadeOut 0.3s 4.7s;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
