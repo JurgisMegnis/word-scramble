@@ -1,10 +1,45 @@
 /* reset */ 
-* {
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+  /* 2. Remove default margin */
+  * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: "Outfit", sans-serif;
-}
+  }
+  body {
+    /* 3. Add accessible line-height */
+    line-height: 1.5;
+    /* 4. Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+  }
+  /* 5. Improve media defaults */
+  img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+  }
+  /* 6. Inherit fonts for form controls */
+  input, button, textarea, select {
+    font: inherit;
+  }
+  /* 7. Avoid text overflows */
+  p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+  }
+  /* 8. Improve line wrapping */
+  p {
+    text-wrap: pretty;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+  /*
+    9. Create a root stacking context
+  */
+  #root, #__next {
+    isolation: isolate;
+  }
 
 /* colors */
 $base-dark: #030616;
@@ -37,7 +72,7 @@ $purple-light: #C951E7;
 @mixin txt-button {
     font-family: "Outfit", serif;
     font-size: 0.875rem;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 /* error toast stiles - generated in script.js */
@@ -84,18 +119,48 @@ body {
     width: 90%;
     max-width: 420px;
     background-color: $base-dark;
-    padding: 24px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1.5rem;
+    border-radius: 12px;
+}
+
+.word-container {
+    width: 100%;
+    background-color: $grey-200;
+    padding: .5rem 0 .5rem 0;
+    border-radius: 4px;
+
+    h1 {
+        @include txt-large();
+        color: $grey-100;
+        width: fit-content;
+        margin: 0 auto;
+        letter-spacing: 1rem;
+    }
 }
 
 .tries-container {
     position: relative;
     display: flex;
+    align-items: center;
+
+    p {
+        @include txt-small();
+        color: $grey-200;
+        vertical-align: center;
+    }
 
     ol, li {
         display: inline-block;
+    }
+
+    ol {
+        display: flex;
+        align-items: center;
+        margin-left: 8px;
     }
 
     li {
@@ -103,11 +168,54 @@ body {
         height: 6px;
         background-color: $grey-200;
         border-radius: 50%;
-        margin-right: 1rem;
+        margin-right: 8px;
 
         &.filled {
             background-color: $purple-medium;
         }
     }
 
+}
+
+.inputs {
+    margin: 2rem 0 2rem 0;
+
+    input {
+        width: 42px;
+        height: 39px;
+        background-color: $base-dark;
+        border: 2px solid $grey-200;
+        border-radius: 6px;
+        margin-right: 4px;
+        color: $base-light;
+        @include txt-medium();
+        text-align: center;
+        caret-color: transparent;
+        line-height: 39px;
+
+        &:focus {
+            outline:none;
+            border-color: $purle-dark;
+        }
+    }
+}
+
+.buttons {
+    #get-word {
+        margin-right: 40px;
+    }
+
+    button {
+        padding: .5rem 40px .5rem 40px;
+        @include txt-button();
+        color: $base-light;
+        background-color: $purple-light;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 0 $purle-dark;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
