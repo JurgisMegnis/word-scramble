@@ -53,11 +53,35 @@ function showError(message) {
 
 const getWordBtn = document.getElementById("get-word");
 const wordDisplay = document.querySelector(".word");
+const inputs = document.querySelectorAll(".inputs input");
 
 /* EVENT LISTENERS */
 
 document.addEventListener("DOMContentLoaded", displayTheWord); // generate scrambled word on document load
 getWordBtn.addEventListener("click", displayTheWord); // generate scrambled word on a click
+
+/* move the focus to the next input once the current one has reached its maximum length */
+inputs.forEach((input, index) => {
+    input.addEventListener('input', () => {
+        if (input.value.length >= input.maxLength) {
+            // if there's a next input, focus it
+            if (index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        }
+    });
+
+    /* backspace functionality */
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && input.value.length === 0) {
+            if (index > 0) {
+                inputs[index - 1].focus();
+            }
+        }
+    });
+});
+
+
 
 /* EVENT HANDLERS */
 
@@ -86,4 +110,4 @@ async function displayTheWord() {
     } finally {
         getWordBtn.disabled = false;
     }
-}
+};
