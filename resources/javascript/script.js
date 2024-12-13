@@ -1,6 +1,9 @@
-const url = "https://random-word-api.vercel.app/api?words=1&length=6";
+/* CONSTANTS */
 
+const url = "https://random-word-api.vercel.app/api?words=1&length=6";
 let originalWord; // variable for the original word to compare with the answer
+
+/* OBJECTS */
 
 /* class fetching a word, splitting it in seperate letters, scrambling it and concatenating in to a string */
 class WordScrambler {
@@ -36,6 +39,43 @@ class WordScrambler {
     }
 }
 
+/* class handling input interactions */
+class InputHandler {
+    constructor(inputs) {
+        this.inputs = inputs;
+    }
+
+    /* move the focus to the next input once the current one has reached its maximum length */
+    handleInput(input, index) {
+        if (input.value.length >= input.maxLength) {
+            // if there's a next input, focus it
+            if (index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        }
+    }
+    
+    /* move the focus to the previous input once current ones content has been deleted */
+    handleBackspace(e, input, index) {
+        if (e.key === 'Backspace' && input.value.length === 0) {
+            if (index > 0) {
+                inputs[index - 1].focus();
+            }
+        }
+    }
+    
+    /* always focus on the first empty input no matter which one is selected */
+    handleFocus(index) {
+        if (inputs && index > 0 && inputs[index - 1]) {
+            if (inputs[index - 1].value.length === 0) {
+                inputs[index - 1].focus();
+            }
+        }
+    }
+}
+
+/* HELPER FUNCTIONS */
+
 /* generating a toast for error messages */
 function showError(message) {
     const errorDiv = document.createElement('div');
@@ -60,28 +100,17 @@ const inputs = document.querySelectorAll(".inputs input");
 document.addEventListener("DOMContentLoaded", displayTheWord); // generate scrambled word on document load
 getWordBtn.addEventListener("click", displayTheWord); // generate scrambled word on a click
 
-/* move the focus to the next input once the current one has reached its maximum length */
+
+const inputHandler = new InputHandler(inputs); // instance of the InputHandler class
+
 inputs.forEach((input, index) => {
     input.addEventListener('input', () => {
-        if (input.value.length >= input.maxLength) {
-            // if there's a next input, focus it
-            if (index < inputs.length - 1) {
-                inputs[index + 1].focus();
-            }
-        }
-    });
-
-    /* backspace functionality */
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && input.value.length === 0) {
-            if (index > 0) {
-                inputs[index - 1].focus();
-            }
-        }
-    });
+        inputHandler.handleInput(input, index);
+        checkInput(input, index);
+    }); 
+    input.addEventListener('keydown', (e) => inputHandler.handleBackspace(e, input, index)); 
+    input.addEventListener('focus', () => inputHandler.handleFocus(index)); 
 });
-
-
 
 /* EVENT HANDLERS */
 
@@ -91,11 +120,13 @@ const wordScrambler = new WordScrambler(); // object (instance) of the WordScram
 async function displayTheWord() {
     getWordBtn.disabled = true; // disable button during load
     wordDisplay.textContent = "Loading...";
+    inputs[0].focus();
 
     try {
         originalWord = await wordScrambler.getWord();
         const scrambledWord = wordScrambler.scrambleTheWord(originalWord);
         wordDisplay.textContent = scrambledWord;
+        console.log(originalWord);
     } catch(error) {
         console.error('Error in displayTheWord:', error);
         wordDisplay.textContent = "";
@@ -111,3 +142,15 @@ async function displayTheWord() {
         getWordBtn.disabled = false;
     }
 };
+
+function checkInput(input, index) {
+    let guess;
+    if (inputs[inputs.length -  1].value) {
+        guess = Array.from(inputs)
+            .map(input => input.value)
+            .join('');      
+    }
+    if (guess === originalWord) {
+        alert("yeyaaa");
+    }
+}
