@@ -81,8 +81,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 body {
   min-height: 100svh;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   background-image: url(../images/bg-guess-the-word.png);
   background-size: cover;
 }
@@ -148,7 +151,7 @@ body {
 }
 
 .inputs {
-  margin: 2rem 0 2rem 0;
+  margin: 2rem 0 1rem 0;
 }
 .inputs input {
   width: 42px;
@@ -170,19 +173,55 @@ body {
   border-color: #672171;
 }
 
-.buttons #get-word {
-  margin-right: 40px;
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 .buttons button {
-  padding: 0.5rem 40px 0.5rem 40px;
   font-family: "Outfit", serif;
   font-size: 0.875rem;
   font-weight: 500;
+}
+.buttons button.primary {
+  padding: 0.5rem 24px 0.5rem 24px;
   color: #F2F5F9;
+  border-radius: 8px;
   background-color: #C951E7;
   border: none;
-  border-radius: 8px;
   box-shadow: 0 4px 0 #672171;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: background-color 0.2s ease-in-out;
+}
+.buttons button.primary svg {
+  fill: #7429C6;
+}
+.buttons button.primary:hover {
+  background-color: rgba(201, 81, 231, 0.9);
+}
+.buttons button.secondary {
+  padding: 0.5rem 24px 0.5rem 24px;
+  border: none;
+  background-color: transparent;
+  color: #C951E7;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s ease-in-out;
+}
+.buttons button.secondary svg {
+  fill: #C951E7;
+}
+.buttons button.secondary svg.animate {
+  transition: rotate 0.5s ease-in-out;
+  rotate: 360deg;
+}
+.buttons button.secondary:hover {
+  background-color: rgba(103, 33, 113, 0.3764705882);
 }
 .buttons button:hover {
   cursor: pointer;

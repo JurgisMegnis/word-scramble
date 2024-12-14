@@ -47,6 +47,7 @@ $base-light: #F2F5F9;
 $grey-100: #97A3B6;
 $grey-200: #4A5567;
 $purle-dark: #672171;
+$purle-dark-100: #67217160;
 $purple-medium: #7429C6;
 $purple-light: #C951E7;
 
@@ -109,8 +110,11 @@ $purple-light: #C951E7;
 
 body {
     min-height: 100svh;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
     background-image: url(../images/bg-guess-the-word.png);
     background-size: cover;
 }
@@ -178,7 +182,7 @@ body {
 }
 
 .inputs {
-    margin: 2rem 0 2rem 0;
+    margin: 2rem 0 1rem 0;
 
     input {
         width: 42px;
@@ -201,18 +205,60 @@ body {
 }
 
 .buttons {
-    #get-word {
-        margin-right: 40px;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 
     button {
-        padding: .5rem 40px .5rem 40px;
         @include txt-button();
-        color: $base-light;
-        background-color: $purple-light;
-        border: none;
-        border-radius: 8px;
-        box-shadow: 0 4px 0 $purle-dark;
+
+        &.primary {
+            padding: .5rem 24px .5rem 24px;
+            
+            color: $base-light;
+            border-radius: 8px;
+            background-color: $purple-light;
+            border: none;
+            box-shadow: 0 4px 0 $purle-dark;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: background-color .2s ease-in-out;
+
+            svg {
+                fill: $purple-medium;
+            }
+
+            &:hover {
+                background-color: change-color($purple-light, $alpha: 0.9);
+            }
+        }
+
+        &.secondary {
+            padding: .5rem 24px .5rem 24px;
+            border: none;
+            background-color: transparent;
+            color: $purple-light;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color .2s ease-in-out;
+
+            svg {
+                fill: $purple-light;
+
+                &.animate {
+                    transition: rotate .5s ease-in-out;
+                    rotate: 360deg;
+                }
+            }
+
+            &:hover {
+                background-color: $purle-dark-100;
+            }
+        }
 
         &:hover {
             cursor: pointer;

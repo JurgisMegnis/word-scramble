@@ -89,9 +89,20 @@ function showError(message) {
     }, 5000);
 }
 
+/* assign animate class to the getWordBtnIcon */
+function animateIcon() {
+    getWordBtnIcon.classList.add('animate');
+    setTimeout(() => {
+        getWordBtnIcon.classList.remove('animate')
+    }, 500)
+}
+
+
 /* SELECTORS */
 
 const getWordBtn = document.getElementById("get-word");
+const getWordBtnIcon = document.querySelector('.secondary svg');
+const submitBtn = document.getElementById('submit');
 const wordDisplay = document.querySelector(".word");
 const inputs = document.querySelectorAll(".inputs input");
 
@@ -99,15 +110,13 @@ const inputs = document.querySelectorAll(".inputs input");
 
 document.addEventListener("DOMContentLoaded", displayTheWord); // generate scrambled word on document load
 getWordBtn.addEventListener("click", displayTheWord); // generate scrambled word on a click
+getWordBtn.addEventListener('click', animateIcon); // assign animate class to the getWordBtnIcon
 
 
 const inputHandler = new InputHandler(inputs); // instance of the InputHandler class
 
 inputs.forEach((input, index) => {
-    input.addEventListener('input', () => {
-        inputHandler.handleInput(input, index);
-        checkInput(input, index);
-    }); 
+    input.addEventListener('input', () => inputHandler.handleInput(input, index)); 
     input.addEventListener('keydown', (e) => inputHandler.handleBackspace(e, input, index)); 
     input.addEventListener('focus', () => inputHandler.handleFocus(index)); 
 });
