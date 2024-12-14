@@ -1,7 +1,8 @@
-/* CONSTANTS */
+/* VARIABLES */
 
 const url = "https://random-word-api.vercel.app/api?words=1&length=6";
-let originalWord; // variable for the original word to compare with the answer
+let originalWord; // variable for the original word to compare with the guess
+let mistakes = 0;
 
 /* OBJECTS */
 
@@ -49,8 +50,8 @@ class InputHandler {
     handleInput(input, index) {
         if (input.value.length >= input.maxLength) {
             // if there's a next input, focus it
-            if (index < inputs.length - 1) {
-                inputs[index + 1].focus();
+            if (index < this.inputs.length - 1) {
+                this.inputs[index + 1].focus();
             }
         }
     }
@@ -59,44 +60,44 @@ class InputHandler {
     handleBackspace(e, input, index) {
         if (e.key === 'Backspace' && input.value.length === 0) {
             if (index > 0) {
-                inputs[index - 1].focus();
+                this.inputs[index - 1].focus();
             }
         }
     }
     
     /* always focus on the first empty input no matter which one is selected */
     handleFocus(index) {
-        if (inputs && index > 0 && inputs[index - 1]) {
-            if (inputs[index - 1].value.length === 0) {
-                inputs[index - 1].focus();
+        if (this.inputs && index > 0 && this.inputs[index - 1]) {
+            if (this.inputs[index - 1].value.length === 0) {
+                this.inputs[index - 1].focus();
             }
         }
     }
+
+    /* returns a guess if the last input has a value */ 
+    getGuess() {
+        if (this.inputs[this.inputs.length - 1].value) {
+            return Array.from(this.inputs)
+                .map(input => input.value)
+                .join('');
+        }
+        return null;
+    }
+
+    /* the gyess against the originalWord */
+    checkInput() {
+        let guess = this.getGuess();
+        if (guess && guess === originalWord) {
+            alert("yeyaaa");
+            inputs.forEach(input => input.value = '');
+            displayTheWord();
+        } else if (guess && guess != originalWord) {
+            alert("Try again!");
+            mistakes++;
+            mistakeTracker();
+        }
+    }
 }
-
-/* HELPER FUNCTIONS */
-
-/* generating a toast for error messages */
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    document.body.appendChild(errorDiv);
-
-    // remove it after 3s
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
-}
-
-/* assign animate class to the getWordBtnIcon */
-function animateIcon() {
-    getWordBtnIcon.classList.add('animate');
-    setTimeout(() => {
-        getWordBtnIcon.classList.remove('animate')
-    }, 500)
-}
-
 
 /* SELECTORS */
 
@@ -105,19 +106,28 @@ const getWordBtnIcon = document.querySelector('.secondary svg');
 const submitBtn = document.getElementById('submit');
 const wordDisplay = document.querySelector(".word");
 const inputs = document.querySelectorAll(".inputs input");
+const mistakeIndicators = document.querySelectorAll('ol li');
+const mistakeMessage = document.querySelector('.tries-label');
 
 /* EVENT LISTENERS */
 
 document.addEventListener("DOMContentLoaded", displayTheWord); // generate scrambled word on document load
 getWordBtn.addEventListener("click", displayTheWord); // generate scrambled word on a click
 getWordBtn.addEventListener('click', animateIcon); // assign animate class to the getWordBtnIcon
+submitBtn.addEventListener('click', () => inputHandler.checkInput()); // submits the guess
 
 
 const inputHandler = new InputHandler(inputs); // instance of the InputHandler class
 
 inputs.forEach((input, index) => {
     input.addEventListener('input', () => inputHandler.handleInput(input, index)); 
-    input.addEventListener('keydown', (e) => inputHandler.handleBackspace(e, input, index)); 
+    input.addEventListener('keydown', (e) => {
+        inputHandler.handleBackspace(e, input, index)
+        // add enter key handling to submit a guess
+        if (e.key === 'Enter' && inputHandler.getGuess()) {
+            inputHandler.checkInput();
+        }
+    }); 
     input.addEventListener('focus', () => inputHandler.handleFocus(index)); 
 });
 
@@ -152,14 +162,38 @@ async function displayTheWord() {
     }
 };
 
-function checkInput(input, index) {
-    let guess;
-    if (inputs[inputs.length -  1].value) {
-        guess = Array.from(inputs)
-            .map(input => input.value)
-            .join('');      
+function mistakeTracker() {
+    if (mistakes <= mistakeIndicators.length) {
+        mistakeIndicators[mistakes - 1].classList.add('filled');
+        mistakeTrackerMessage();
     }
-    if (guess === originalWord) {
-        alert("yeyaaa");
-    }
+}
+
+function mistakeTrackerMessage() {
+    mistakeMessage.textContent = `Tries (${mistakes}/5)`;
+}
+
+mistakeTrackerMessage();
+
+/* HELPER FUNCTIONS */
+
+/* generating a toast for error messages */
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    document.body.appendChild(errorDiv);
+
+    // remove it after 3s
+    setTimeout(() => {
+        errorDiv.remove();
+    }, 5000);
+}
+
+/* assign animate class to the getWordBtnIcon */
+function animateIcon() {
+    getWordBtnIcon.classList.add('animate');
+    setTimeout(() => {
+        getWordBtnIcon.classList.remove('animate')
+    }, 500)
 }
