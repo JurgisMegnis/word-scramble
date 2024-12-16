@@ -1,3 +1,5 @@
+/* colors */
+/* typography */
 /* reset */
 /* 1. Use a more-intuitive box-sizing model */
 *, *::before, *::after {
@@ -49,20 +51,7 @@ h1, h2, h3, h4, h5, h6 {
   isolation: isolate;
 }
 
-/* colors */
-/* typography */
-/* error toast stiles - generated in script.js */
-.error-message {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #ff4444;
-  color: white;
-  padding: 15px;
-  border-radius: 5px;
-  animation: slideIn 0.5s, fadeOut 0.3s 4.7s;
-}
-
+/* animations */
 @keyframes slideIn {
   from {
     transform: translateX(100%);
@@ -79,13 +68,81 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
   }
 }
+@keyframes slideInY {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  75% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+/* toasts */
+.error-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #ff4444;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  animation: slideIn 0.5s, fadeOut 0.3s 4.7s;
+}
+
+.toast-success {
+  font-family: "Outfit", serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  position: absolute;
+  z-index: -1;
+  top: 98%;
+  background-color: #7429C6;
+  width: 420px;
+  padding: 1rem;
+  border-radius: 0 0 8px 8px;
+  text-align: center;
+  color: #C951E7;
+  animation: slideInY 0.5s, fadeOut 0.3s 0.85s;
+}
+
+.toast-error {
+  font-family: "Outfit", serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  position: absolute;
+  z-index: -1;
+  top: 98%;
+  background-color: #EB5656;
+  width: 420px;
+  padding: 1rem;
+  border-radius: 0 0 8px 8px;
+  text-align: center;
+  color: #F2F5F9;
+  animation: slideInY 0.5s, fadeOut 0.3s 0.85s;
+}
+
 body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
   background-image: url(../images/bg-guess-the-word.png);
   background-size: cover;
 }
@@ -100,6 +157,7 @@ body {
   align-items: center;
   gap: 1.5rem;
   border-radius: 12px;
+  position: relative;
 }
 
 .word-container {
@@ -119,34 +177,45 @@ body {
   letter-spacing: 1rem;
 }
 
-.tries-container {
-  position: relative;
+.score-container {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  width: 70%;
 }
-.tries-container p {
+.score-container p {
   font-family: "Outfit", serif;
   font-size: 0.75rem;
   font-weight: 400;
   color: #4A5567;
   vertical-align: center;
 }
-.tries-container ol, .tries-container li {
+.score-container p span {
+  font-family: "Outfit", serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #97A3B6;
+}
+.score-container .tries-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.score-container .tries-container ol, .score-container .tries-container li {
   display: inline-block;
 }
-.tries-container ol {
+.score-container .tries-container ol {
   display: flex;
   align-items: center;
   margin-left: 8px;
 }
-.tries-container li {
+.score-container .tries-container li {
   width: 6px;
   height: 6px;
   background-color: #4A5567;
   border-radius: 50%;
   margin-right: 8px;
 }
-.tries-container li.filled {
+.score-container .tries-container li.filled {
   background-color: #7429C6;
 }
 
@@ -171,6 +240,11 @@ body {
 .inputs input:focus {
   outline: none;
   border-color: #672171;
+}
+
+/* this animation is displayed when user checks a word that doesn't match the original word */
+.shake {
+  animation: shake 0.3s ease-in-out;
 }
 
 .buttons {

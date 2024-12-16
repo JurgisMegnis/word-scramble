@@ -1,8 +1,20 @@
+/* SELECTORS */
+
+const getWordBtn = document.getElementById("get-word");
+const getWordBtnIcon = document.querySelector('.secondary svg');
+const submitBtn = document.getElementById('submit');
+const wordDisplay = document.querySelector(".word");
+const inputs = document.querySelectorAll(".inputs input");
+const triesIndicators = document.querySelectorAll('ol li');
+const triesMessage = document.querySelector('.tries-label');
+const wordsGuessed = document.querySelector('.words-guessed');
+const gameContainer = document.querySelector('.game-container');
+const inputsContainer = document.querySelector('.inputs');
+
 /* VARIABLES */
 
 const url = "https://random-word-api.vercel.app/api?words=1&length=6";
 let originalWord; // variable for the original word to compare with the guess
-let mistakes = 0;
 
 /* OBJECTS */
 
@@ -84,30 +96,63 @@ class InputHandler {
         return null;
     }
 
-    /* the gyess against the originalWord */
+    /* the guess against the originalWord */
     checkInput() {
         let guess = this.getGuess();
         if (guess && guess === originalWord) {
-            alert("yeyaaa");
+            statusMessage("Correct!", "success");
             inputs.forEach(input => input.value = '');
             displayTheWord();
+            scoreTracker.trackGuess();
+        } else if (guess && scoreTracker.mistakes === scoreTracker.triesIndicators.length-1) {
+            alert(`Game over! Your score: ${scoreTracker.guesses}`);
         } else if (guess && guess != originalWord) {
-            alert("Try again!");
-            mistakes++;
-            mistakeTracker();
-        }
+            statusMessage("Not the word", "error");
+            scoreTracker.mistakes++;
+            scoreTracker.trackMistake();
+            shakeAnimation();
+        } 
     }
 }
 
-/* SELECTORS */
+/* class checking the player score */
+class ScoreTracker {
+    constructor(triesIndicators, triesMessage, wordsGuessed) {
+        this.mistakes = 0;
+        this.guesses = 0;
+        this.triesIndicators = triesIndicators;
+        this.triesMessage = triesMessage;
+        this.wordsGuessed = wordsGuessed;
+    }
+    
+    /* updates the mistake indicators and calls the updateTriesMessage function */
+    trackMistake() {
+        if (this.mistakes <= this.triesIndicators.length) {
+            this.triesIndicators[this.mistakes - 1].classList.add('filled');
+            this.updateTriesMessage();
+        }
+    }
 
-const getWordBtn = document.getElementById("get-word");
-const getWordBtnIcon = document.querySelector('.secondary svg');
-const submitBtn = document.getElementById('submit');
-const wordDisplay = document.querySelector(".word");
-const inputs = document.querySelectorAll(".inputs input");
-const mistakeIndicators = document.querySelectorAll('ol li');
-const mistakeMessage = document.querySelector('.tries-label');
+    /* updates the Tries(x/x) text */
+    updateTriesMessage() {
+        const totalTries = this.triesIndicators.length;
+        this.triesMessage.textContent = `Tries (${this.mistakes}/${totalTries})`;
+    }
+
+    /* updates the guess variable and prints out how many words have user guessed */
+    trackGuess() {
+        this.guesses++;
+        this.wordsGuessed.textContent = this.guesses;
+    }
+}
+
+/* INSTANCES */
+
+const wordScrambler = new WordScrambler(); // object (instance) of the WordScrambler class
+const inputHandler = new InputHandler(inputs); // instance of the InputHandler class
+const scoreTracker = new ScoreTracker(triesIndicators, triesMessage, wordsGuessed); // instance of the ScoreTracker class
+
+scoreTracker.updateTriesMessage(); // initial setup call
 
 /* EVENT LISTENERS */
 
@@ -115,9 +160,6 @@ document.addEventListener("DOMContentLoaded", displayTheWord); // generate scram
 getWordBtn.addEventListener("click", displayTheWord); // generate scrambled word on a click
 getWordBtn.addEventListener('click', animateIcon); // assign animate class to the getWordBtnIcon
 submitBtn.addEventListener('click', () => inputHandler.checkInput()); // submits the guess
-
-
-const inputHandler = new InputHandler(inputs); // instance of the InputHandler class
 
 inputs.forEach((input, index) => {
     input.addEventListener('input', () => inputHandler.handleInput(input, index)); 
@@ -132,8 +174,6 @@ inputs.forEach((input, index) => {
 });
 
 /* EVENT HANDLERS */
-
-const wordScrambler = new WordScrambler(); // object (instance) of the WordScrambler class
 
 /* displays the scrambled word on a click */
 async function displayTheWord() {
@@ -162,19 +202,6 @@ async function displayTheWord() {
     }
 };
 
-function mistakeTracker() {
-    if (mistakes <= mistakeIndicators.length) {
-        mistakeIndicators[mistakes - 1].classList.add('filled');
-        mistakeTrackerMessage();
-    }
-}
-
-function mistakeTrackerMessage() {
-    mistakeMessage.textContent = `Tries (${mistakes}/5)`;
-}
-
-mistakeTrackerMessage();
-
 /* HELPER FUNCTIONS */
 
 /* generating a toast for error messages */
@@ -190,10 +217,32 @@ function showError(message) {
     }, 5000);
 }
 
+/* status message */
+function statusMessage(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast-${type}`;
+    toast.textContent = message;
+    gameContainer.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 1100);
+}
+
 /* assign animate class to the getWordBtnIcon */
 function animateIcon() {
     getWordBtnIcon.classList.add('animate');
     setTimeout(() => {
         getWordBtnIcon.classList.remove('animate')
     }, 500)
+}
+
+/* add shake animation to the inputs container */
+function shakeAnimation() {
+    inputsContainer.classList.add('shake');
+
+    // Remove the class after animation ends
+    setTimeout(() => {
+        inputsContainer.classList.remove('shake');
+    }, 500); // matches animation duration
 }

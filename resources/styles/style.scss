@@ -1,3 +1,40 @@
+/* colors */
+$base-dark: #030616;
+$base-light: #F2F5F9;
+$grey-100: #97A3B6;
+$grey-200: #4A5567;
+$purple-dark: #672171;
+$purple-dark-100: #67217160;
+$purple-medium: #7429C6;
+$purple-light: #C951E7;
+$success: #70DC96;
+$error: #EB5656;
+
+/* typography */ 
+@mixin txt-large {
+    font-family: "Outfit", serif;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+@mixin txt-medium {
+    font-family: "Outfit", serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+@mixin txt-small {
+    font-family: "Outfit", serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+@mixin txt-button {
+    font-family: "Outfit", serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
 /* reset */ 
 /* 1. Use a more-intuitive box-sizing model */
 *, *::before, *::after {
@@ -41,54 +78,7 @@
     isolation: isolate;
   }
 
-/* colors */
-$base-dark: #030616;
-$base-light: #F2F5F9;
-$grey-100: #97A3B6;
-$grey-200: #4A5567;
-$purle-dark: #672171;
-$purle-dark-100: #67217160;
-$purple-medium: #7429C6;
-$purple-light: #C951E7;
-
-/* typography */ 
-@mixin txt-large {
-    font-family: "Outfit", serif;
-    font-size: 2rem;
-    font-weight: 500;
-}
-
-@mixin txt-medium {
-    font-family: "Outfit", serif;
-    font-size: 1.25rem;
-    font-weight: 500;
-}
-
-@mixin txt-small {
-    font-family: "Outfit", serif;
-    font-size: 0.75rem;
-    font-weight: 400;
-}
-
-@mixin txt-button {
-    font-family: "Outfit", serif;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-/* error toast stiles - generated in script.js */
-.error-message {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #ff4444;
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    animation: 
-        slideIn 0.5s,
-        fadeOut 0.3s 4.7s;
-}
+/* animations */
 
 @keyframes slideIn {
     from {
@@ -108,13 +98,76 @@ $purple-light: #C951E7;
     }
 }
 
+@keyframes slideInY {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+/* toasts */
+.error-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ff4444;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    animation: 
+        slideIn 0.5s,
+        fadeOut 0.3s 4.7s;
+}
+
+.toast-success {
+    @include txt-medium();
+    position: absolute;
+    z-index: -1;
+    top: 98%; 
+    background-color: $purple-medium;
+    width: 420px;
+    padding: 1rem;
+    border-radius: 0 0 8px 8px;
+    text-align: center;
+    color: $purple-light;
+    animation: 
+        slideInY .5s,
+        fadeOut .3s .85s;
+}
+
+.toast-error {
+    @include txt-medium();
+    position: absolute;
+    z-index: -1;
+    top: 98%; 
+    background-color: $error;
+    width: 420px;
+    padding: 1rem;
+    border-radius: 0 0 8px 8px;
+    text-align: center;
+    color: $base-light;
+    animation: 
+        slideInY .5s,
+        fadeOut .3s .85s;
+}
+
 body {
     min-height: 100svh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    //gap: 1rem;
     background-image: url(../images/bg-guess-the-word.png);
     background-size: cover;
 }
@@ -129,6 +182,7 @@ body {
     align-items: center;
     gap: 1.5rem;
     border-radius: 12px;
+    position: relative;
 }
 
 .word-container {
@@ -146,39 +200,50 @@ body {
     }
 }
 
-.tries-container {
-    position: relative;
+.score-container {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    width: 70%;
 
     p {
         @include txt-small();
         color: $grey-200;
         vertical-align: center;
-    }
 
-    ol, li {
-        display: inline-block;
-    }
-
-    ol {
-        display: flex;
-        align-items: center;
-        margin-left: 8px;
-    }
-
-    li {
-        width: 6px;
-        height: 6px;
-        background-color: $grey-200;
-        border-radius: 50%;
-        margin-right: 8px;
-
-        &.filled {
-            background-color: $purple-medium;
+        span {
+            @include txt-button();
+            color: $grey-100;
         }
     }
 
+    .tries-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        ol, li {
+            display: inline-block;
+        }
+
+        ol {
+            display: flex;
+            align-items: center;
+            margin-left: 8px;
+        }
+
+        li {
+            width: 6px;
+            height: 6px;
+            background-color: $grey-200;
+            border-radius: 50%;
+            margin-right: 8px;
+
+            &.filled {
+                background-color: $purple-medium;
+            }
+        }
+
+    }
 }
 
 .inputs {
@@ -199,9 +264,14 @@ body {
 
         &:focus {
             outline:none;
-            border-color: $purle-dark;
+            border-color: $purple-dark;
         }
     }
+}
+
+/* this animation is displayed when user checks a word that doesn't match the original word */
+.shake {
+    animation: shake 0.3s ease-in-out;
 }
 
 .buttons {
@@ -219,7 +289,7 @@ body {
             border-radius: 8px;
             background-color: $purple-light;
             border: none;
-            box-shadow: 0 4px 0 $purle-dark;
+            box-shadow: 0 4px 0 $purple-dark;
             display: flex;
             align-items: center;
             gap: 16px;
@@ -256,7 +326,7 @@ body {
             }
 
             &:hover {
-                background-color: $purle-dark-100;
+                background-color: $purple-dark-100;
             }
         }
 
