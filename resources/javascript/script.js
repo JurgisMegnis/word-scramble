@@ -126,6 +126,8 @@ class InputHandler {
         scoreTracker.trackMistake();
         AnimationUtlis.flashInputs(DOM.inputs);
         AnimationUtlis.shake(DOM.inputsContainer);
+        DOM.inputs.forEach(input => input.value = '');
+        this.inputs[0].focus();
     }
 }
 
@@ -257,6 +259,10 @@ DOM.inputs.forEach((input, index) => {
         
         if (e.key === 'Enter') {
             inputHandler.checkInput(); // submit the guess on Enter
+        }
+
+        if(e.key === ' ') {
+            e.preventDefault(); // prevents players to use space
         }
     }); 
     input.addEventListener('focus', () => inputHandler.handleFocus(index)); 
