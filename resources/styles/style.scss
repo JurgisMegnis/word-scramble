@@ -9,6 +9,7 @@ $purple-medium: #7429C6;
 $purple-light: #C951E7;
 $success: #70DC96;
 $error: #EB5656;
+$gradient-end: #202737;
 
 /* typography */ 
 @mixin txt-large {
@@ -118,7 +119,7 @@ $error: #EB5656;
 @keyframes flashAnimation {
     0% {
         border-color: $grey-200;
-        background-color: $base-dark;
+        background-color: transparent;
     }
     50% {
         border-color: $error; 
@@ -126,7 +127,7 @@ $error: #EB5656;
     }
     100% {
         border-color: $grey-200;
-        background-color: $base-dark;
+        background-color: transparent;
     }
 }
 
@@ -191,7 +192,8 @@ body {
 .game-container {
     width: 90%;
     max-width: 420px;
-    background-color: $base-dark;
+    //background-color: $base-dark;
+    background: linear-gradient(-45deg, $gradient-end, $base-dark);
     padding: 32px;
     display: flex;
     flex-direction: column;
@@ -268,7 +270,7 @@ body {
     input {
         width: 42px;
         height: 39px;
-        background-color: $base-dark;
+        background-color: transparent;
         border: 2px solid $grey-200;
         border-radius: 6px;
         margin-right: 4px;

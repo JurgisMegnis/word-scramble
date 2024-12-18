@@ -96,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes flashAnimation {
   0% {
     border-color: #4A5567;
-    background-color: #030616;
+    background-color: transparent;
   }
   50% {
     border-color: #EB5656;
@@ -104,7 +104,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   100% {
     border-color: #4A5567;
-    background-color: #030616;
+    background-color: transparent;
   }
 }
 /* toasts */
@@ -167,7 +167,7 @@ body {
 .game-container {
   width: 90%;
   max-width: 420px;
-  background-color: #030616;
+  background: linear-gradient(-45deg, #202737, #030616);
   padding: 32px;
   display: flex;
   flex-direction: column;
@@ -242,7 +242,7 @@ body {
 .inputs input {
   width: 42px;
   height: 39px;
-  background-color: #030616;
+  background-color: transparent;
   border: 2px solid #4A5567;
   border-radius: 6px;
   margin-right: 4px;
