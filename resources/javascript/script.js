@@ -253,10 +253,10 @@ DOM.submitBtn.addEventListener('click', () => inputHandler.checkInput()); // sub
 DOM.inputs.forEach((input, index) => {
     input.addEventListener('input', () => inputHandler.handleInput(input, index)); 
     input.addEventListener('keydown', (e) => {
-        inputHandler.handleBackspace(e, input, index)
-        // add enter key handling to submit a guess
+        inputHandler.handleBackspace(e, input, index); // delete characters on Backspace
+        
         if (e.key === 'Enter') {
-            inputHandler.checkInput();
+            inputHandler.checkInput(); // submit the guess on Enter
         }
     }); 
     input.addEventListener('focus', () => inputHandler.handleFocus(index)); 
@@ -268,8 +268,8 @@ DOM.newGameBtn.addEventListener('click', resetGame);
 /* displays the scrambled word on a click */
 async function displayTheWord() {
     DOM.getWordBtn.disabled = true; // disable button during load
-    DOM.wordDisplay.textContent = "...";
-    DOM.inputs[0].focus();
+    DOM.wordDisplay.textContent = "..."; // show on load
+    DOM.inputs[0].focus(); // focus on the first input
 
     try {
         originalWord = await wordScrambler.getWord();
@@ -301,16 +301,4 @@ function resetGame() {
     displayTheWord();
     scoreTracker.resetMistakes();
     scoreTracker.resetGuess();
-}
-
-/* status message */
-function statusMessage(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = `toast-${type}`;
-    toast.textContent = message;
-    DOM.gameContainer.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 1500);
 }
