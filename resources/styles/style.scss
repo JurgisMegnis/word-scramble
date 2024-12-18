@@ -115,12 +115,28 @@ $error: #EB5656;
     100% { transform: translateX(0); }
 }
 
+@keyframes flashAnimation {
+    0% {
+        border-color: $grey-200;
+        background-color: $base-dark;
+    }
+    50% {
+        border-color: $error; 
+        background-color: rgba($error, 0.1); 
+    }
+    100% {
+        border-color: $grey-200;
+        background-color: $base-dark;
+    }
+}
+
 /* toasts */
 .error-message {
+    @include txt-medium();
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: #ff4444;
+    background-color:$error;
     color: white;
     padding: 15px;
     border-radius: 5px;
@@ -142,7 +158,7 @@ $error: #EB5656;
     color: $purple-light;
     animation: 
         slideInY .5s,
-        fadeOut .3s .85s;
+        fadeOut .3s 1.25s;
 }
 
 .toast-error {
@@ -158,7 +174,7 @@ $error: #EB5656;
     color: $base-light;
     animation: 
         slideInY .5s,
-        fadeOut .3s .85s;
+        fadeOut .3s 1.25s;
 }
 
 body {
@@ -274,64 +290,116 @@ body {
     animation: shake 0.3s ease-in-out;
 }
 
+.flash {
+    animation: flashAnimation 0.7s;
+}
+
 .buttons {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+}
 
-    button {
-        @include txt-button();
+button {
+    @include txt-button();
 
-        &.primary {
-            padding: .5rem 24px .5rem 24px;
-            
-            color: $base-light;
-            border-radius: 8px;
-            background-color: $purple-light;
-            border: none;
-            box-shadow: 0 4px 0 $purple-dark;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            transition: background-color .2s ease-in-out;
+    &.primary {
+        padding: .5rem 24px .5rem 24px;
+    
+        color: $base-light;
+        border-radius: 8px;
+        background-color: $purple-light;
+        border: none;
+        box-shadow: 0 4px 0 $purple-dark;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: background-color .2s ease-in-out;
 
-            svg {
-                fill: $purple-medium;
-            }
-
-            &:hover {
-                background-color: change-color($purple-light, $alpha: 0.9);
-            }
+        svg {
+            fill: $purple-medium;
         }
 
-        &.secondary {
-            padding: .5rem 24px .5rem 24px;
-            border: none;
-            background-color: transparent;
-            color: $purple-light;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background-color .2s ease-in-out;
+        &:hover {
+            background-color: change-color($purple-light, $alpha: 0.9);
+        }
 
-            svg {
-                fill: $purple-light;
+        &:active {
+            box-shadow: 0 0 0 $purple-dark;
+            transform: translateY(4px);
+        }
+    }
 
-                &.animate {
-                    transition: rotate .5s ease-in-out;
-                    rotate: 360deg;
-                }
-            }
+    &.secondary {
+        padding: .5rem 24px .5rem 24px;
+        border: none;
+        background-color: transparent;
+        color: $purple-light;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: background-color .2s ease-in-out;
 
-            &:hover {
-                background-color: $purple-dark-100;
+        svg {
+            fill: $purple-light;
+
+            &.animate {
+                transition: rotate .5s ease-in-out;
+                rotate: 360deg;
             }
         }
 
         &:hover {
-            cursor: pointer;
+            background-color: $purple-dark-100;
         }
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.game-over {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    z-index: 10;
+    background-color: rgba($base-dark, 0.7); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(10px); // For Safari support
+    border-radius: 12px; 
+    padding: 32px; 
+
+    img, 
+    h1,
+    p,
+    button {
+        margin: 0 auto;
+        width: fit-content;
+        text-align: center;
+    }
+
+    img {
+        width: 40%;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+    }
+
+    h1 {
+        @include txt-large();
+        color: $purple-light;
+    }
+
+    p {
+        @include txt-medium();
+        color: $base-light;
+    }
+
+    button {
+        margin-top: 3rem;
     }
 }

@@ -11,6 +11,20 @@
 </head>
 <body>
     <div class="game-container">
+        <div class="game-over" hidden>
+            <img src="resources/images/game-over-img.png" alt="">
+            <h1 class="game-over-title">Game over!</h1>
+            <p class="game-over-counter">You guessed X words</p>
+            <button class="primary" id="reset">
+                <svg fill="#currentColor" width="16px" height="16px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                    <g fill-rule="evenodd">
+                        <path d="M0 176.142 176.13.012l960.12 960.119L176.13 1920 0 1743.87l783.864-783.739L0 176.142Z"/>
+                        <path d="M784 176.142 960.13.012l960.12 960.119L960.13 1920 784 1743.87l783.86-783.739L784 176.142Z"/>
+                    </g>
+                </svg>
+                New game
+            </button>
+        </div>
         <img src="resources/images/Word Scramblle.svg" class="game-logo" alt="Game logo">
 
         <!-- scrambled word that player has to guess -->

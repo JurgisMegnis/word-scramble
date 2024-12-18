@@ -93,12 +93,29 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateX(0);
   }
 }
+@keyframes flashAnimation {
+  0% {
+    border-color: #4A5567;
+    background-color: #030616;
+  }
+  50% {
+    border-color: #EB5656;
+    background-color: rgba(235, 86, 86, 0.1);
+  }
+  100% {
+    border-color: #4A5567;
+    background-color: #030616;
+  }
+}
 /* toasts */
 .error-message {
+  font-family: "Outfit", serif;
+  font-size: 1.25rem;
+  font-weight: 500;
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #ff4444;
+  background-color: #EB5656;
   color: white;
   padding: 15px;
   border-radius: 5px;
@@ -118,7 +135,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0 0 8px 8px;
   text-align: center;
   color: #C951E7;
-  animation: slideInY 0.5s, fadeOut 0.3s 0.85s;
+  animation: slideInY 0.5s, fadeOut 0.3s 1.25s;
 }
 
 .toast-error {
@@ -134,7 +151,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0 0 8px 8px;
   text-align: center;
   color: #F2F5F9;
-  animation: slideInY 0.5s, fadeOut 0.3s 0.85s;
+  animation: slideInY 0.5s, fadeOut 0.3s 1.25s;
 }
 
 body {
@@ -247,17 +264,22 @@ body {
   animation: shake 0.3s ease-in-out;
 }
 
+.flash {
+  animation: flashAnimation 0.7s;
+}
+
 .buttons {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
-.buttons button {
+
+button {
   font-family: "Outfit", serif;
   font-size: 0.875rem;
   font-weight: 500;
 }
-.buttons button.primary {
+button.primary {
   padding: 0.5rem 24px 0.5rem 24px;
   color: #F2F5F9;
   border-radius: 8px;
@@ -269,13 +291,17 @@ body {
   gap: 16px;
   transition: background-color 0.2s ease-in-out;
 }
-.buttons button.primary svg {
+button.primary svg {
   fill: #7429C6;
 }
-.buttons button.primary:hover {
+button.primary:hover {
   background-color: rgba(201, 81, 231, 0.9);
 }
-.buttons button.secondary {
+button.primary:active {
+  box-shadow: 0 0 0 #672171;
+  transform: translateY(4px);
+}
+button.secondary {
   padding: 0.5rem 24px 0.5rem 24px;
   border: none;
   background-color: transparent;
@@ -287,16 +313,59 @@ body {
   gap: 8px;
   transition: background-color 0.2s ease-in-out;
 }
-.buttons button.secondary svg {
+button.secondary svg {
   fill: #C951E7;
 }
-.buttons button.secondary svg.animate {
+button.secondary svg.animate {
   transition: rotate 0.5s ease-in-out;
   rotate: 360deg;
 }
-.buttons button.secondary:hover {
+button.secondary:hover {
   background-color: rgba(103, 33, 113, 0.3764705882);
 }
-.buttons button:hover {
+button:hover {
   cursor: pointer;
+}
+
+.game-over {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: rgba(3, 6, 22, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 32px;
+}
+.game-over img,
+.game-over h1,
+.game-over p,
+.game-over button {
+  margin: 0 auto;
+  width: -moz-fit-content;
+  width: fit-content;
+  text-align: center;
+}
+.game-over img {
+  width: 40%;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+.game-over h1 {
+  font-family: "Outfit", serif;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #C951E7;
+}
+.game-over p {
+  font-family: "Outfit", serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #F2F5F9;
+}
+.game-over button {
+  margin-top: 3rem;
 }/*# sourceMappingURL=style.css.map */
