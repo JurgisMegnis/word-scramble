@@ -114,7 +114,7 @@ class InputHandler {
             return;
         } 
         
-        if (scoreTracker.mistakes === scoreTracker.triesIndicators.length-1) {
+        if (scoreTracker.mistakes === scoreTracker.triesIndicators.length) {
             DOM.gameOverOverlay.hidden = false;
             DOM.gameOverMessage.textContent = `You guessed ${scoreTracker.guesses} words`;
             return;
@@ -134,7 +134,7 @@ class InputHandler {
 /* class checking the player score */
 class ScoreTracker {
     constructor(triesIndicators, triesMessage, wordsGuessed) {
-        this.mistakes = 0;
+        this.mistakes = 1;
         this.guesses = 0;
         this.triesIndicators = triesIndicators;
         this.triesMessage = triesMessage;
@@ -151,11 +151,11 @@ class ScoreTracker {
 
     /* reset mistake indicators on a new game start */
     resetMistakes() {
-        this.mistakes = 0;
+        this.mistakes = 1;
         this.updateTriesMessage();
-        DOM.triesIndicators.forEach( (indicator) => {
+        [DOM.triesIndicators[1], DOM.triesIndicators[2]].forEach(indicator => {
             indicator.classList.remove('filled');
-        })
+        });
     }
 
     /* updates the Tries(x/x) text */
@@ -243,7 +243,7 @@ const wordScrambler = new WordScrambler(); // object (instance) of the WordScram
 const inputHandler = new InputHandler(DOM.inputs); // instance of the InputHandler class
 const scoreTracker = new ScoreTracker(DOM.triesIndicators, DOM.triesMessage, DOM.wordsGuessed); // instance of the ScoreTracker class
 
-scoreTracker.updateTriesMessage(); // initial setup call
+scoreTracker.trackMistake(); // initial setup call
 
 /* EVENT LISTENERS */
 
